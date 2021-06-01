@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "599802664377",
+    "project_id": "postrelais",
+    "storage_bucket": "postrelais.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599802664377:android:f13c4323fb87cf93b61268",
+        "android_client_info": {
+          "package_name": "com.twcsoftware.flutter_lann"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599802664377-n7m0to9cr48k316tq792s1k6ujmlnm8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1sShbEd2aNDiBSBAXRhZD2GRus1piQi4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599802664377-n7m0to9cr48k316tq792s1k6ujmlnm8t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "599802664377-c8e6a1oon8elvha4qei9founbaqe8rvf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.twcsoftware.flutterlann"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
