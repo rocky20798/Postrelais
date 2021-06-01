@@ -26,7 +26,7 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-//MacTest
+//WinTest
 
 class MyApp extends StatelessWidget {
   @override
