@@ -7,6 +7,8 @@ import 'package:flutter_lann/shop/widgets/badge.dart';
 import 'package:flutter_lann/shop/widgets/cart_status.dart';
 import 'package:provider/provider.dart';
 
+import 'auth_screen.dart';
+
 class ProductDetailScreen extends StatelessWidget {
   static const routeName = '/product-detail';
 
@@ -30,7 +32,8 @@ class ProductDetailScreen extends StatelessWidget {
                     Icons.shopping_cart,
                   ),
                   onPressed: () {
-                    _auth.logout();
+                    Navigator.of(context)
+                        .pushReplacementNamed(AuthScreen.routeName);
                   },
                 )
               : Consumer<Cart>(

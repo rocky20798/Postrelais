@@ -78,7 +78,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                       Icons.shopping_cart,
                     ),
                     onPressed: () {
-                      _auth.logout();
+                      Navigator.of(context)
+                          .pushReplacementNamed(AuthScreen.routeName);
                     },
                   )
                 : Consumer<Cart>(
@@ -98,7 +99,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   ),
           ],
         ),
-        drawer: AppDrawer(_auth.isAdmin, _auth.isAnonym),
+        drawer: _auth.isAnonym ? null : AppDrawer(_auth.isAdmin),
         body: FutureBuilder(
             future: _refreshProducts(context),
             builder: (ctx, snapshot) => snapshot.connectionState ==

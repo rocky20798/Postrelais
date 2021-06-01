@@ -29,7 +29,7 @@ class UserProductsScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: AppDrawer(_auth.isAdmin, _auth.isAnonym),
+      drawer: _auth.isAnonym ? null : AppDrawer(_auth.isAdmin),
       body: FutureBuilder(
         future: _refreshProducts(context),
         builder: (ctx, snapshot) =>

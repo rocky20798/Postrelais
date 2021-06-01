@@ -8,14 +8,14 @@ class ChatScreen extends StatelessWidget {
   static const routeName = '/chat';
 
   List<ChatMessage> messages = [
-    ChatMessage(messageContent: "Hello, Will", messageType: "receiver"),
-    ChatMessage(messageContent: "How have you been?", messageType: "receiver"),
+    ChatMessage(messageContent: "Hallo", messageType: "receiver"),
+    ChatMessage(messageContent: "Dieser Chat ist in Bearbeitung", messageType: "receiver"),
     ChatMessage(
-        messageContent: "Hey Kriss, I am doing fine dude. wbu?",
+        messageContent: "Danach kannst du uns direkt erreichen",
         messageType: "sender"),
-    ChatMessage(messageContent: "ehhhh, doing OK.", messageType: "receiver"),
+    ChatMessage(messageContent: "Und uns deine Fragen stellen", messageType: "receiver"),
     ChatMessage(
-        messageContent: "Is there any thing wrong?", messageType: "sender"),
+        messageContent: "Bis bald", messageType: "sender"),
   ];
 
   @override
@@ -39,24 +39,15 @@ class ChatScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Kriss Benwat",
+                        "Admin",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
                       SizedBox(
                         height: 6,
                       ),
-                      Text(
-                        "Online",
-                        style: TextStyle(
-                            color: Colors.grey.shade600, fontSize: 13),
-                      ),
                     ],
                   ),
-                ),
-                Icon(
-                  Icons.settings,
-                  color: Colors.black54,
                 ),
               ],
             ),
