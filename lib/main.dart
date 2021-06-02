@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_lann/messaging/models/user.dart';
+import 'package:flutter_lann/messaging/newMessageScreen.dart';
 import 'package:flutter_lann/pages/dashboard.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/orders.dart';
@@ -71,7 +73,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Lato',
               scaffoldBackgroundColor: Colors.black),
           home: auth.isAuth
-              ?HomeScreen(1, null, null)
+              ? HomeScreen(1, null, null)
               : FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (ctx, authResultSnapshot) =>
@@ -86,7 +88,8 @@ class MyApp extends StatelessWidget {
             OrdersScreen.routeName: (ctx) => HomeScreen(1, null, 2),
             UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
             EditProductScreen.routeName: (ctx) => EditProductScreen(),
-            ProductsOverviewScreen.routeName: (ctx) => HomeScreen(1, null, null),
+            ProductsOverviewScreen.routeName: (ctx) =>
+                HomeScreen(1, null, null),
             AuthScreen.routeName: (ctx) => HomeScreen(2, null, null),
             Dashboard.routeName: (ctx) => HomeScreen(0, null, null),
             ChatScreen.routeName: (ctx) => ChatScreen(),

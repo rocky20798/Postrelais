@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lann/messaging/newMessageScreen.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,8 @@ class ChatScreen extends StatelessWidget {
     final _auth = Provider.of<Auth>(context);
     List messages = [];
 
-    return Scaffold(
+    return NewMessageScreen();
+    /*Scaffold(
       appBar: AppBar(
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -134,6 +136,6 @@ class ChatScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );*/
   }
 }
