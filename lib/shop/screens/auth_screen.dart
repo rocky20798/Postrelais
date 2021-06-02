@@ -180,6 +180,7 @@ class _AuthCardState extends State<AuthCard> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                if (_authMode != AuthMode.Angestellter) SizedBox(height: 20),
                 if (_authMode != AuthMode.Angestellter)
                   Form(
                     key: _formKey2,
@@ -231,18 +232,7 @@ class _AuthCardState extends State<AuthCard> {
                     color: Color(0xffc9a42c),
                     textColor: Colors.black,
                   ),
-                if (_authMode != AuthMode.Angestellter && !_isLoading)
-                  RaisedButton(
-                    child: Text('Nur schauen'),
-                    onPressed: _submitAnonym,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
-                    color: Color(0xffc9a42c),
-                    textColor: Colors.black,
-                  ),
+                if (_authMode == AuthMode.Gast) SizedBox(height: 20),
                 if (_authMode == AuthMode.Angestellter)
                   TextFormField(
                     style: TextStyle(color: Colors.white),

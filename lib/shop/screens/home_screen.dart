@@ -3,7 +3,7 @@ import 'package:flutter_lann/pages/dashboard.dart';
 import 'package:flutter_lann/shop/providers/interentview.dart';
 import 'package:flutter_lann/shop/screens/auth_screen.dart';
 import 'package:flutter_lann/shop/screens/cart.dart';
-import 'package:flutter_lann/shop/screens/chat_screen.dart';
+import 'package:flutter_lann/shop/screens/chat_screen_detail.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
 

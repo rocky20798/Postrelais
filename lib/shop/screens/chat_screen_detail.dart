@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/message.dart';
+import 'package:provider/provider.dart';
 
 //Fire Store
 // CollectionReference messagesCollection = FirebaseFirestore.instance.collection('chat');
@@ -7,24 +9,16 @@ import 'package:flutter_lann/shop/providers/message.dart';
 class ChatScreen extends StatelessWidget {
   static const routeName = '/chat';
 
-  List<ChatMessage> messages = [
-    ChatMessage(messageContent: "Hallo", messageType: "receiver"),
-    ChatMessage(messageContent: "Dieser Chat ist in Bearbeitung", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Danach kannst du uns direkt erreichen",
-        messageType: "sender"),
-    ChatMessage(messageContent: "Und uns deine Fragen stellen", messageType: "receiver"),
-    ChatMessage(
-        messageContent: "Bis bald", messageType: "sender"),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final _auth = Provider.of<Auth>(context);
+    final _messages = Pro
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff262f38),
         flexibleSpace: SafeArea(
           child: Container(
             padding: EdgeInsets.only(right: 16),

@@ -1,7 +1,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/product.dart';
-//import 'package:flutter_lann/shop/screens/auth_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

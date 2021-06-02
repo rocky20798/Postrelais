@@ -8,7 +8,7 @@ import 'package:flutter_lann/shop/providers/orders_state.dart';
 import 'package:flutter_lann/shop/providers/products.dart';
 import 'package:flutter_lann/shop/screens/auth_screen.dart';
 import 'package:flutter_lann/shop/screens/cart.dart';
-import 'package:flutter_lann/shop/screens/chat_screen.dart';
+import 'package:flutter_lann/shop/screens/chat_screen_detail.dart';
 import 'package:flutter_lann/shop/screens/edit_product.dart';
 import 'package:flutter_lann/shop/screens/home_screen.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
@@ -19,6 +19,8 @@ import 'package:flutter_lann/shop/screens/user_products.dart';
 import 'package:flutter_lann/shop/widgets/cart_status.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_lann/shop/providers/cart.dart';
+
+//https://github.com/Xenon-Labs/Flutter-Development/tree/master/chat_app
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
