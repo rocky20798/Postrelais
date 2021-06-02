@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
-import 'package:flutter_lann/shop/providers/message.dart';
 import 'package:provider/provider.dart';
 
 //Fire Store
@@ -12,7 +11,7 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<Auth>(context);
-    final _messages = Pro
+    List messages = [];
 
     return Scaffold(
       appBar: AppBar(
