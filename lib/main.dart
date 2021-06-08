@@ -21,8 +21,6 @@ import 'package:flutter_lann/shop/widgets/cart_status.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_lann/shop/providers/cart.dart';
 
-//https://github.com/Xenon-Labs/Flutter-Development/tree/master/chat_app
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
