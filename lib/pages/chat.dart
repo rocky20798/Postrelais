@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lann/messaging/newMessageScreen.dart';
 
 class Chat extends StatefulWidget {
   @override
@@ -9,7 +8,7 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
-    return NewMessageScreen();
+    return null;
     /*Scaffold(
       appBar: AppBar(
         title: Text("Chat"),

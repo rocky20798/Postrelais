@@ -1,16 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_lann/messaging/models/user.dart';
-import 'package:flutter_lann/messaging/newMessageScreen.dart';
 import 'package:flutter_lann/pages/dashboard.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
+import 'package:flutter_lann/shop/providers/messages.dart';
 import 'package:flutter_lann/shop/providers/orders.dart';
 import 'package:flutter_lann/shop/providers/orders_state.dart';
 import 'package:flutter_lann/shop/providers/products.dart';
 import 'package:flutter_lann/shop/screens/auth_screen.dart';
 import 'package:flutter_lann/shop/screens/cart.dart';
-import 'package:flutter_lann/shop/screens/chat_screen_detail.dart';
+import 'package:flutter_lann/shop/screens/chat_screen.dart';
 import 'package:flutter_lann/shop/screens/edit_product.dart';
 import 'package:flutter_lann/shop/screens/home_screen.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
@@ -50,6 +49,13 @@ class MyApp extends StatelessWidget {
             auth.token,
             auth.userId,
             previousProducts == null ? [] : previousProducts.items,
+          ),
+        ),
+        ChangeNotifierProxyProvider<Auth, Messages>(
+          update: (ctx, auth, previousMessages) => Messages(
+            auth.token,
+            auth.userId,
+            previousMessages == null ? [] : previousMessages.items,
           ),
         ),
         ChangeNotifierProvider.value(

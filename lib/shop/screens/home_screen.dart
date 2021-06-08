@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lann/pages/chat.dart';
 import 'package:flutter_lann/pages/dashboard.dart';
+import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/interentview.dart';
+import 'package:flutter_lann/shop/providers/messages.dart';
 import 'package:flutter_lann/shop/screens/auth_screen.dart';
 import 'package:flutter_lann/shop/screens/cart.dart';
-import 'package:flutter_lann/shop/screens/chat_screen_detail.dart';
+import 'package:flutter_lann/shop/screens/chat_screen.dart';
+import 'package:flutter_lann/shop/screens/chat_screen_overview.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
+import 'package:flutter_lann/shop/screens/splash-screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   int _selectedIndex;
@@ -23,6 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _messages = Provider.of<Messages>(context, listen: false);
+    final _auth = Provider.of<Auth>(context, listen: false);
+
     return Scaffold(
       bottomNavigationBar: bottomNavigationBar(),
       body: widget._selectedIndex == 0
@@ -32,7 +41,23 @@ class _HomeScreenState extends State<HomeScreen> {
           : widget._selectedIndex == 1
               ? shopSide()
               : widget._selectedIndex == 3
-                  ? ChatScreen()
+                  ? _auth.isAdmin && widget._unterMenuIndex != 2
+                      ? FutureBuilder(
+                          future: _messages.fetchAndSetUsers(),
+                          builder: (ctx, authResultSnapshot) =>
+                              authResultSnapshot.connectionState ==
+                                      ConnectionState.waiting
+                                  ? SplashScreen()
+                                  : ChatScreenOverview(),
+                        )
+                      : FutureBuilder(
+                          future: _messages.fetchAndSetMessages(),
+                          builder: (ctx, authResultSnapshot) =>
+                              authResultSnapshot.connectionState ==
+                                      ConnectionState.waiting
+                                  ? SplashScreen()
+                                  : ChatScreen(),
+                        )
                   : AuthScreen(),
     );
   }
