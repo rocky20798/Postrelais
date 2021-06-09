@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/cart.dart' show Cart;

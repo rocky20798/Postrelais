@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/products.dart';
 import 'package:flutter_lann/shop/screens/edit_product.dart';
+import 'package:flutter_lann/shop/screens/products_overview.dart';
 import 'package:flutter_lann/shop/widgets/app_drawer.dart';
 import 'package:flutter_lann/shop/widgets/user_product_item.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,13 @@ class UserProductsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Meine Produkte'),
         backgroundColor: Color(0xff262f38),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context)
+                .pushReplacementNamed(ProductsOverviewScreen.routeName);
+          },
+        ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
@@ -29,7 +37,6 @@ class UserProductsScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: _auth.isAnonym ? null : AppDrawer(_auth.isAdmin),
       body: FutureBuilder(
         future: _refreshProducts(context),
         builder: (ctx, snapshot) =>

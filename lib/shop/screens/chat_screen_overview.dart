@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
-import 'package:flutter_lann/shop/providers/message.dart';
 import 'package:flutter_lann/shop/providers/messages.dart';
-import 'package:flutter_lann/shop/screens/chat_screen.dart';
 import 'package:flutter_lann/shop/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 

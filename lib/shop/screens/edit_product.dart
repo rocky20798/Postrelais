@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lann/shop/providers/product.dart';
 import 'package:flutter_lann/shop/providers/products.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = '/edit-product';
@@ -106,8 +110,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
         await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text('An error occurred!', style: TextStyle(color: Colors.red)),
-            content: Text('Something went wrong.', style: TextStyle(color: Colors.red)),
+            title:
+                Text('An error occurred!', style: TextStyle(color: Colors.red)),
+            content: Text('Something went wrong.',
+                style: TextStyle(color: Colors.red)),
             actions: <Widget>[
               // ignore: deprecated_member_use
               FlatButton(
@@ -131,7 +137,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Produkt erstellen'),
+        title: Text('Produkt bearbeiten'),
         backgroundColor: Color(0xff262f38),
         actions: <Widget>[
           IconButton(
@@ -151,11 +157,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 child: ListView(
                   children: <Widget>[
                     typeFieldWidget(),
+                    SizedBox(height: 20),
                     TextFormField(
-                      style: TextStyle(backgroundColor: Colors.white),
+                      style: TextStyle(color: Colors.white),
                       initialValue: _initValues['title'],
                       maxLines: 2,
-                      decoration: InputDecoration(labelText: 'Title'),
+                      decoration: InputDecoration(
+                          labelText: 'Titel',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(color: Color(0xffc9a42c))),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(color: Colors.white))),
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.multiline,
                       onFieldSubmitted: (_) {
@@ -178,9 +193,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
+                    SizedBox(height: 20),
                     TextFormField(
+                      style: TextStyle(color: Colors.white),
                       initialValue: _initValues['price'],
-                      decoration: InputDecoration(labelText: 'Price'),
+                      decoration: InputDecoration(
+                          labelText: 'Preis',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(color: Color(0xffc9a42c))),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(color: Colors.white))),
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.number,
                       focusNode: _priceFocusNode,
@@ -211,9 +236,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             isFavorite: _editedProduct.isFavorite);
                       },
                     ),
+                    SizedBox(height: 20),
                     TextFormField(
+                      style: TextStyle(color: Colors.white),
                       initialValue: _initValues['description'],
-                      decoration: InputDecoration(labelText: 'Description'),
+                      decoration: InputDecoration(
+                          labelText: 'Beschreibung',
+                          labelStyle: TextStyle(color: Colors.white),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(color: Color(0xffc9a42c))),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(color: Colors.white))),
                       maxLines: 3,
                       keyboardType: TextInputType.multiline,
                       focusNode: _descriptionFocusNode,
@@ -238,71 +273,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         );
                       },
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          height: 100,
-                          margin: EdgeInsets.only(
-                            top: 8,
-                            right: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          child: _imageUrlController.text.isEmpty
-                              ? Text('Enter a URL')
-                              : FittedBox(
-                                  child: Image.network(
-                                    _imageUrlController.text,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            decoration: InputDecoration(labelText: 'Image URL'),
-                            keyboardType: TextInputType.url,
-                            textInputAction: TextInputAction.done,
-                            controller: _imageUrlController,
-                            focusNode: _imageUrlFocusNode,
-                            onFieldSubmitted: (_) {
-                              _saveForm();
-                            },
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter an image URL.';
-                              }
-                              if (!value.startsWith('http') &&
-                                  !value.startsWith('https')) {
-                                return 'Please enter a valid URL.';
-                              }
-                              if (!value.endsWith('.png') &&
-                                  !value.endsWith('.jpg') &&
-                                  !value.endsWith('.jpeg')) {
-                                return 'Please enter a valid image URL.';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _editedProduct = Product(
-                                title: _editedProduct.title,
-                                price: _editedProduct.price,
-                                description: _editedProduct.description,
-                                imageUrl: value,
-                                cathegory: _editedProduct.cathegory,
-                                id: _editedProduct.id,
-                                isFavorite: _editedProduct.isFavorite,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                    SizedBox(height: 20),
+                    ImageUploadWidget(),
                   ],
                 ),
               ),
@@ -311,7 +283,75 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   var currentSelectedValue;
-  final List<String> cathegory = ['Alles', 'Gruppe1', 'Gruppe2', 'Gruppe3', 'Gruppe4'];
+  final List<String> cathegory = [
+    'Alles',
+    'Gruppe1',
+    'Gruppe2',
+    'Gruppe3',
+    'Gruppe4'
+  ];
+
+  //Image Upload
+  var _image;
+  bool isLoading = false;
+  Reference ref = FirebaseStorage.instance.ref();
+
+  Widget ImageUploadWidget() {
+    return Column(
+      children: [
+        ElevatedButton(
+            child: Text("Change Image"),
+            onPressed: () async {
+              await getImage();
+              if (_image != null) {
+                setState(() {
+                  isLoading = true;
+                });
+                TaskSnapshot addImg = await ref
+                    .child("image/${_editedProduct.id}")
+                    .putFile(_image);
+                if (addImg.state == TaskState.success) {
+                  _editedProduct = Product(
+                      title: _editedProduct.title,
+                      price: _editedProduct.price,
+                      description: _editedProduct.description,
+                      imageUrl: await ref
+                      .child("image/${_editedProduct.id}")
+                      .getDownloadURL(),
+                      cathegory: _editedProduct.cathegory,
+                      id: _editedProduct.id,
+                      isFavorite: _editedProduct.isFavorite);
+                  setState(() {
+                    isLoading = false;
+                  });
+                  print("added to Firebase Storage");
+                }
+              }
+            }),
+        isLoading
+            ? CircularProgressIndicator()
+            : _editedProduct.imageUrl == null
+                ? Text(
+                    'No image selected.',
+                    style: TextStyle(color: Colors.white),
+                  )
+                : Image.network(
+                    _editedProduct.imageUrl,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
+      ],
+    );
+  }
+
+  Future getImage() async {
+    final _picker = ImagePicker();
+    var image = await _picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = File(image.path);
+    });
+  }
 
   Widget typeFieldWidget() {
     final products = Provider.of<Products>(context);
@@ -321,11 +361,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
         builder: (FormFieldState<String> state) {
           return InputDecorator(
             decoration: InputDecoration(
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5.0))),
+                labelText: 'Gruppe',
+                labelStyle: TextStyle(color: Colors.white),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(color: Color(0xffc9a42c))),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(color: Colors.white))),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                hint: Text("Select Group"),
+                hint: Text(
+                  "Select Group",
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: TextStyle(color: Colors.white),
                 value: currentSelectedValue == 1
                     ? _initValues['cathegory']
                     : currentSelectedValue,

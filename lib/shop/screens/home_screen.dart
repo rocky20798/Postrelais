@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_lann/pages/chat.dart';
 import 'package:flutter_lann/pages/dashboard.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/interentview.dart';

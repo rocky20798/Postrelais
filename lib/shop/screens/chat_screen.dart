@@ -1,5 +1,4 @@
 import 'package:bubble/bubble.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/message.dart';
