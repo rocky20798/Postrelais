@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/orders.dart' as ord;
 import 'package:flutter_lann/shop/providers/orders_state.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:stripe_payment/stripe_payment.dart';
 
 class OrderItemUser extends StatefulWidget {
   final ord.OrderItem order;
@@ -17,6 +20,29 @@ class OrderItemUser extends StatefulWidget {
 
 class _OrderItemUserState extends State<OrderItemUser> {
   var _expanded = false;
+  //Payment
+  Token _paymentToken;
+  String _error;
+  ScrollController _controller = ScrollController();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  //Online Payment
+  @override
+  initState() {
+    super.initState();
+    StripePayment.setOptions(StripeOptions(
+        publishableKey:
+            "pk_live_51HyIjKFJRmSJXBRaTU6ftoDoxeyHf9NIM6OdVrB9MONjsFwIQtF9vP64uo6i3XrjCPd71sMOHLwFc72Bqe1qrrEJ00OzAx6bso",
+        merchantId: "Test",
+        androidPayMode: 'test'));
+  }
+
+  void setError(dynamic error) {
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text(error.toString())));
+    setState(() {
+      _error = error.toString();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +115,8 @@ class _OrderItemUserState extends State<OrderItemUser> {
                     .toList(),
               ),
             ),
-          if (widget.order.stateOrder == _orderState.choiceListName(3) || widget.order.stateOrder == _orderState.choiceListName(4))
+          if (widget.order.stateOrder == _orderState.choiceListName(3) ||
+              widget.order.stateOrder == _orderState.choiceListName(4))
             Row(
               children: [
                 Expanded(
@@ -110,8 +137,9 @@ class _OrderItemUserState extends State<OrderItemUser> {
                       color: Colors.purple,
                       onPressed: () {
                         setState(() {
-                          buttonClick(2);
+                          _paymentToken = null;
                         });
+                        payment();
                       }),
                 ),
               ],
@@ -143,7 +171,8 @@ class _OrderItemUserState extends State<OrderItemUser> {
                 ),
               ],
             ),
-          if (widget.order.stateOrder == _orderState.choiceListName(1) || widget.order.stateOrder == _orderState.choiceListName(3))
+          if (widget.order.stateOrder == _orderState.choiceListName(1) ||
+              widget.order.stateOrder == _orderState.choiceListName(3))
             Row(
               children: [
                 Expanded(
@@ -180,6 +209,35 @@ class _OrderItemUserState extends State<OrderItemUser> {
     widget.orders.updateOrder("", widget.order.id, _orderState.choiceList[pos],
         _orderState.choiceListDesc[pos]);
     Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
+  }
+
+  void payment() {
+    if (Platform.isIOS) {
+      _controller.jumpTo(450);
+    }
+    StripePayment.paymentRequestWithNativePay(
+      androidPayOptions: AndroidPayPaymentRequest(
+        totalPrice: widget.order.amount.toStringAsFixed(2),
+        currencyCode: "EUR",
+      ),
+      applePayOptions: ApplePayPaymentOptions(
+        countryCode: 'DE',
+        currencyCode: 'EUR',
+        items: [
+          ApplePayItem(
+            label: widget.order.dateTime.toIso8601String(),
+            amount: widget.order.amount.toStringAsFixed(2),
+          )
+        ],
+      ),
+    ).then((token) {
+      setState(() {
+        Scaffold.of(context)
+            .showSnackBar(SnackBar(content: Text('Received ${token.tokenId}')));
+        _paymentToken = token;
+        buttonClick(2);
+      });
+    }).catchError(setError);
   }
 }
 
@@ -355,7 +413,10 @@ class _OrderItemAdminState extends State<OrderItemAdmin> {
 
   void buttonClick(int pos, String text) {
     final _orderState = Provider.of<OrderState>(context, listen: false);
-    widget.orders.updateOrder(widget.order.creatorId, widget.order.id, _orderState.choiceList[pos],
+    widget.orders.updateOrder(
+        widget.order.creatorId,
+        widget.order.id,
+        _orderState.choiceList[pos],
         text == null ? _orderState.choiceListDesc[pos] : text);
     //Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
   }

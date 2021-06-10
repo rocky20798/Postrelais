@@ -60,7 +60,8 @@ class Messages with ChangeNotifier {
           reciID: messageData['reciID'],
           sendID: messageData['sendID'],
           timestamp: messageData['timestamp'],
-          //id: messageId,
+          id: messageId,
+          isRead: messageData['isRead']
         ));
       });
       _items = loadedMessages;
@@ -82,6 +83,7 @@ class Messages with ChangeNotifier {
           'sendID': message.sendID,
           'reciID': message.reciID,
           'timestamp': message.timestamp,
+          'isRead': false
         }),
       );
       final newMessage = Message(
@@ -89,6 +91,7 @@ class Messages with ChangeNotifier {
         sendID: message.sendID,
         reciID: message.reciID,
         timestamp: message.timestamp,
+        isRead: false
       );
       _items.add(newMessage);
       notifyListeners();
@@ -97,40 +100,4 @@ class Messages with ChangeNotifier {
       throw error;
     }
   }
-
-  /*Future<void> updateProduct(String id, Product newProduct) async {
-    final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    if (prodIndex >= 0) {
-      final url =
-          'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json?auth=$authToken';
-      await http.patch(Uri.parse(url),
-          body: json.encode({
-            'title': newProduct.title,
-            'description': newProduct.description,
-            'imageUrl': newProduct.imageUrl,
-            'price': newProduct.price,
-            'cathegory': newProduct.cathegory,
-          }));
-      _items[prodIndex] = newProduct;
-      notifyListeners();
-    } else {
-      print('...');
-    }
-  }
-
-  Future<void> deleteProduct(String id) async {
-    final url =
-        'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/products/$id.json?auth=$authToken';
-    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
-    var existingProduct = _items[existingProductIndex];
-    _items.removeAt(existingProductIndex);
-    notifyListeners();
-    final response = await http.delete(Uri.parse(url));
-    if (response.statusCode >= 400) {
-      _items.insert(existingProductIndex, existingProduct);
-      notifyListeners();
-      //throw HttpException('Could not delete product.');
-    }
-    existingProduct = null;
-  }*/
 }

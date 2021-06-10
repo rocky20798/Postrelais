@@ -7,6 +7,7 @@ class Message with ChangeNotifier {
   final String sendID;
   final String reciID;
   final String timestamp;
+  final String id;
   bool isRead;
 
   Message({
@@ -14,20 +15,22 @@ class Message with ChangeNotifier {
     @required this.sendID,
     @required this.reciID,
     @required this.timestamp,
+    @required this.id,
     this.isRead = false,
   });
 
-  void _setFavValue(bool newValue) {
+  void _setReadValue(bool newValue) {
     isRead = newValue;
     notifyListeners();
   }
 
-  Future<void> toggleReadStatus(String token, String userId) async {
+  Future<void> toggleReadStatus(
+      String token, String userId, String messageId) async {
     final oldStatus = isRead;
     isRead = !isRead;
     notifyListeners();
     final url =
-        'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/userChat/$userId/$timestamp.json?auth=$token';
+        'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/userChat/$userId/$messageId.json?auth=$token';
     try {
       final response = await http.put(
         Uri.parse(url),
@@ -36,11 +39,11 @@ class Message with ChangeNotifier {
         ),
       );
       if (response.statusCode >= 400) {
-        _setFavValue(oldStatus);
+        _setReadValue(oldStatus);
         print(response.statusCode);
       }
     } catch (error) {
-      _setFavValue(oldStatus);
+      _setReadValue(oldStatus);
       print("Error2");
     }
   }

@@ -30,7 +30,11 @@ class Auth with ChangeNotifier {
   }
 
   bool get isAdmin {
-    return _email == 'admin@admin.de';
+    if (_email != null) {
+      return _email.substring(_email.length - 8, _email.length - 3) == "admin";
+    } else {
+      return false;
+    }
   }
 
   bool get isAnonym {
@@ -150,6 +154,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> verifyPhoneNumber(String phone) async {
+    _email = null;
     _timeLastLogin = DateTime.now();
     PhoneVerificationCompleted verificationCompleted =
         (PhoneAuthCredential phoneAuthCredential) async {

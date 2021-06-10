@@ -316,8 +316,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       price: _editedProduct.price,
                       description: _editedProduct.description,
                       imageUrl: await ref
-                      .child("image/${_editedProduct.id}")
-                      .getDownloadURL(),
+                          .child("image/${_editedProduct.id}")
+                          .getDownloadURL(),
                       cathegory: _editedProduct.cathegory,
                       id: _editedProduct.id,
                       isFavorite: _editedProduct.isFavorite);

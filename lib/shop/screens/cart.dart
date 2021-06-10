@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_lann/shop/providers/orders.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
 import 'package:flutter_lann/shop/widgets/cart_item.dart';
 import 'package:provider/provider.dart';
-import 'package:stripe_payment/stripe_payment.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -81,31 +79,8 @@ class OrderButton extends StatefulWidget {
 }
 
 class _OrderButtonState extends State<OrderButton> {
-  //Payment
-  Token _paymentToken;
-  String _error;
-  ScrollController _controller = ScrollController();
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   //Order Button
   var _isLoading = false;
-  //Online Payment
-  @override
-  initState() {
-    super.initState();
-    StripePayment.setOptions(StripeOptions(
-        publishableKey:
-            "pk_test_51Ig7kCFkGG6IvAqsjOIPkR9O6P72y8FM0ZiTYaPazU1T9z9b2iRkyjXM9Z3DjHXtziQauKOPmqMzmc0KaxrU62QW00qMTWVSN4",
-        merchantId: "Test",
-        androidPayMode: 'test'));
-  }
-
-  void setError(dynamic error) {
-    Scaffold.of(context)
-        .showSnackBar(SnackBar(content: Text(error.toString())));
-    setState(() {
-      _error = error.toString();
-    });
-  }
 
   //Oder Button
   @override
@@ -116,9 +91,6 @@ class _OrderButtonState extends State<OrderButton> {
       onPressed: (widget.cart.totalAmount <= 0 || _isLoading)
           ? null
           : () {
-              setState(() {
-                _paymentToken = null;
-              });
               addOrder();
               Navigator.of(context)
                   .pushReplacementNamed(OrdersScreen.routeName);
@@ -142,34 +114,5 @@ class _OrderButtonState extends State<OrderButton> {
       _isLoading = false;
     });
     widget.cart.clear();
-  }
-
-  void payment() {
-    if (Platform.isIOS) {
-      _controller.jumpTo(450);
-    }
-    StripePayment.paymentRequestWithNativePay(
-      androidPayOptions: AndroidPayPaymentRequest(
-        totalPrice: widget.cart.totalAmount.toStringAsFixed(2),
-        currencyCode: "EUR",
-      ),
-      applePayOptions: ApplePayPaymentOptions(
-        countryCode: 'DE',
-        currencyCode: 'EUR',
-        items: [
-          ApplePayItem(
-            label: 'Test',
-            amount: widget.cart.totalAmount.toStringAsFixed(2),
-          )
-        ],
-      ),
-    ).then((token) {
-      setState(() {
-        Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text('Received ${token.tokenId}')));
-        _paymentToken = token;
-        addOrder();
-      });
-    }).catchError(setError);
   }
 }
