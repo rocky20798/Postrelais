@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
+import 'package:flutter_lann/shop/screens/push_notification_screen.dart';
 import 'package:flutter_lann/shop/screens/user_products.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
-  final bool _admin;
-
-  AppDrawer(this._admin);
-
   @override
   Widget build(BuildContext context) {
+    final _auth = Provider.of<Auth>(context, listen: false);
     return Drawer(
       child: Container(
         color: Colors.black,
@@ -30,8 +30,24 @@ class AppDrawer extends StatelessWidget {
                     .pushReplacementNamed(OrdersScreen.routeName);
               },
             ),
-            if (_admin) Divider(color: Colors.white),
-            if (_admin)
+            if (_auth.isAdmin) Divider(color: Colors.white),
+            if (_auth.isAdmin)
+              ListTile(
+                leading: Icon(
+                  Icons.notifications,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'Push Notification',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  Navigator.of(context)
+                      .pushReplacementNamed(PushNotificationScreen.routeName);
+                },
+              ),
+            if (_auth.isAdmin) Divider(color: Colors.white),
+            if (_auth.isAdmin)
               ListTile(
                 leading: Icon(
                   Icons.edit,
@@ -46,6 +62,20 @@ class AppDrawer extends StatelessWidget {
                       .pushReplacementNamed(UserProductsScreen.routeName);
                 },
               ),
+            Divider(
+              color: Colors.white,
+            ),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.white),
+              title: Text(
+                'Logout',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                _auth.logout();
+                _auth.signInAnonymously();
+              },
+            ),
           ],
         ),
       ),

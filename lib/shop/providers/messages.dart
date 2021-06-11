@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/message.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -9,8 +11,9 @@ class Messages with ChangeNotifier {
   String userId;
   List<Message> _items = [];
   List<String> _users = [];
+  bool _isAdmin;
 
-  Messages(this._authToken, this.userId, this._items);
+  Messages(this._authToken, this.userId, this._items, this._isAdmin);
 
   List<Message> get items {
     return [..._items];
@@ -35,7 +38,6 @@ class Messages with ChangeNotifier {
         loadedMessages.add(messageId);
       });
       _users = loadedMessages;
-      print(_users);
       notifyListeners();
     } catch (error) {
       throw (error);
@@ -56,20 +58,43 @@ class Messages with ChangeNotifier {
       final List<Message> loadedMessages = [];
       extractedData.forEach((messageId, messageData) {
         loadedMessages.add(Message(
-          content: messageData['content'],
-          reciID: messageData['reciID'],
-          sendID: messageData['sendID'],
-          timestamp: messageData['timestamp'],
-          id: messageId,
-          isRead: messageData['isRead']
-        ));
+            content: messageData['content'],
+            reciID: messageData['reciID'],
+            sendID: messageData['sendID'],
+            timestamp: messageData['timestamp'],
+            id: messageId,
+            isRead: isReadTest(
+                messageData['isRead'], messageData['reciID'], messageId)));
       });
-      _items = loadedMessages;
-      notifyListeners();
+      if (_items != loadedMessages) {
+        _items = loadedMessages;
+        notifyListeners();
+      }
     } catch (error) {
       throw (error);
       return "Error";
     }
+  }
+
+  bool isReadTest(bool input, String reciID, String messageID) {
+    bool output = false;
+    if (input) {
+      output = input;
+    } else {
+      if (reciID == userId) {
+        output = true;
+      } else {
+        if (_isAdmin && reciID == "Admin") {
+          output = true;
+        } else {
+          output = false;
+        }
+      }
+    }
+    if (output) {
+      Message().toggleReadStatus(_authToken, userId, messageID, output);
+    }
+    return output;
   }
 
   Future<void> addMessage(Message message) async {
@@ -87,12 +112,11 @@ class Messages with ChangeNotifier {
         }),
       );
       final newMessage = Message(
-        content: message.content,
-        sendID: message.sendID,
-        reciID: message.reciID,
-        timestamp: message.timestamp,
-        isRead: false
-      );
+          content: message.content,
+          sendID: message.sendID,
+          reciID: message.reciID,
+          timestamp: message.timestamp,
+          isRead: false);
       _items.add(newMessage);
       notifyListeners();
     } catch (error) {

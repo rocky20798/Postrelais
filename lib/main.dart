@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_lann/pages/dashboard.dart';
+import 'package:flutter_lann/shop/screens/dashboard.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/messages.dart';
 import 'package:flutter_lann/shop/providers/orders.dart';
@@ -15,6 +15,7 @@ import 'package:flutter_lann/shop/screens/home_screen.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
 import 'package:flutter_lann/shop/screens/product_detail.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
+import 'package:flutter_lann/shop/screens/push_notification_screen.dart';
 import 'package:flutter_lann/shop/screens/splash-screen.dart';
 import 'package:flutter_lann/shop/screens/user_products.dart';
 import 'package:flutter_lann/shop/widgets/cart_status.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
             auth.token,
             auth.userId,
             previousMessages == null ? [] : previousMessages.items,
+            auth.isAdmin,
           ),
         ),
         ChangeNotifierProvider.value(
@@ -97,6 +99,7 @@ class MyApp extends StatelessWidget {
             AuthScreen.routeName: (ctx) => HomeScreen(2, null, null),
             Dashboard.routeName: (ctx) => HomeScreen(0, null, null),
             ChatScreen.routeName: (ctx) => ChatScreen(),
+            PushNotificationScreen.routeName: (ctx) => PushNotificationScreen(),
           },
         ),
       ),

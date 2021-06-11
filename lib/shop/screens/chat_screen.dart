@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
@@ -8,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
   static const routeName = '/chat';
-  ScrollController _scrollController = ScrollController();
+ScrollController _scrollController = ScrollController();
 
   _scrollToBottom() {
     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
@@ -93,6 +95,7 @@ class ChatScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: TextField(
+                      
                       controller: _inputController,
                       keyboardType: TextInputType.multiline,
                       maxLines: 20,
@@ -130,4 +133,6 @@ class ChatScreen extends StatelessWidget {
       ),
     );
   }
+
+  Messages newMethod(Messages _messages) => _messages;
 }

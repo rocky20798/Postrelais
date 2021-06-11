@@ -37,7 +37,7 @@ class ChatScreenOverview extends StatelessWidget {
                   color: (true ? Colors.grey.shade200 : Colors.blue[200]),
                 ),
                 padding: EdgeInsets.all(16),
-                child: TextButton(
+                child: TextButton( 
                     onPressed: () {
                       _messages.userId = _messages.users[index];
                       Navigator.push(
@@ -46,7 +46,7 @@ class ChatScreenOverview extends StatelessWidget {
                               builder: (_) => HomeScreen(3, null, 2)));
                     },
                     child: Text(
-                      _messages.users[index],
+                      _messages.users[index].substring(0,5),
                       style: TextStyle(fontSize: 15),
                     )),
               ),

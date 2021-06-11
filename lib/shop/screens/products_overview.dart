@@ -34,7 +34,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
     final _auth = Provider.of<Auth>(context);
     final _products = Provider.of<Products>(context, listen: false);
     return Scaffold(
-        appBar: AppBar(
+        appBar: AppBar( 
           title: Text('Hofladen'),
           backgroundColor: Color(0xff262f38),
           actions: <Widget>[
@@ -99,7 +99,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   ),
           ],
         ),
-        drawer: _auth.isAnonym ? null : AppDrawer(_auth.isAdmin),
+        drawer: _auth.isAnonym ? null : AppDrawer(),
         body: FutureBuilder(
             future: _refreshProducts(context),
             builder: (ctx, snapshot) => snapshot.connectionState ==
