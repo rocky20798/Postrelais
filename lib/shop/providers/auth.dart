@@ -88,10 +88,6 @@ class Auth with ChangeNotifier {
     return true;
   }
 
-  ////====================================================================================================
-  ///NEW
-  ///=====================================================================================================
-  //Firebase Auth
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _smsController = TextEditingController();
   String _verificationId;
@@ -107,9 +103,9 @@ class Auth with ChangeNotifier {
         'phonenumber': null,
       });
       prefs.setString('userData', userData);
-      notifyListeners();
       await _auth.signOut();
       print("8Successfully signed out");
+      notifyListeners();
     } catch (e) {
       print("9Failed to sign out: " + e.toString());
     }
@@ -184,7 +180,7 @@ class Auth with ChangeNotifier {
     try {
       await _auth.verifyPhoneNumber(
           phoneNumber: phone,
-          timeout: const Duration(seconds: 5),
+          timeout: const Duration(seconds: 10),
           verificationCompleted: verificationCompleted,
           verificationFailed: verificationFailed,
           codeSent: codeSent,

@@ -47,10 +47,15 @@ class Products with ChangeNotifier {
         'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken&$filterString';
     try {
       final response = await http.get(Uri.parse(url));
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      if (extractedData == null) {
+      Map<String, dynamic> extractedData = null;
+      if (response == null) {
         print("Data == null Products");
         return null;
+      } else {
+        extractedData = json.decode(response.body) as Map<String, dynamic>;
+        if (extractedData == null) {
+          return null;
+        }
       }
       url =
           'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken';

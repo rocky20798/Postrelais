@@ -166,13 +166,12 @@ class _AuthCardState extends State<AuthCard> {
 
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(50),
       ),
-      elevation: 8.0,
+      color: Color(0xff262f38),
+      elevation: 20,
       child: Container(
-        color: Color(0xff262f38),
-        height: 260,
-        constraints: BoxConstraints(minHeight: 260),
+        constraints: BoxConstraints(minHeight: 150),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -232,7 +231,6 @@ class _AuthCardState extends State<AuthCard> {
                     color: Color(0xffc9a42c),
                     textColor: Colors.black,
                   ),
-                if (_authMode == AuthMode.Gast) SizedBox(height: 20),
                 if (_authMode == AuthMode.Angestellter)
                   TextFormField(
                     style: TextStyle(color: Colors.white),
@@ -291,9 +289,6 @@ class _AuthCardState extends State<AuthCard> {
                       _authData['password'] = value;
                     },
                   ),
-                SizedBox(
-                  height: 10,
-                ),
                 if (_isLoading && _authMode == AuthMode.Angestellter)
                   CircularProgressIndicator()
                 else if (_authMode == AuthMode.Angestellter)

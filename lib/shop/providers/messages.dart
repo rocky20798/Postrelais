@@ -46,10 +46,16 @@ class Messages with ChangeNotifier {
   }
 
   Future<String> fetchAndSetMessages() async {
+    if (_authToken == null) {
+      return null;
+    }
     var url =
         'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/userChat/$userId.json?auth=$_authToken';
     try {
       final response = await http.get(Uri.parse(url));
+      if (response == null) {
+        return null;
+      }
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       if (extractedData == null) {
         print("Data == null Products");

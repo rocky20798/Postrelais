@@ -9,16 +9,6 @@ import 'package:flutter_lann/shop/widgets/badge.dart';
 import 'package:flutter_lann/shop/widgets/product_grid.dart';
 import 'package:provider/provider.dart';
 
-Future<void> _refreshProducts(BuildContext context) async {
-  if (await Provider.of<Products>(context, listen: false)
-          .fetchAndSetProducts() ==
-      "Error") {
-    Auth _auth = new Auth();
-    _auth.logout();
-    Navigator.of(context).pushReplacementNamed(AuthScreen.routeName);
-  }
-}
-
 class ProductsOverviewScreen extends StatefulWidget {
   static const routeName = '/product-overview';
   @override
@@ -29,12 +19,16 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showOnlyFavorites = false;
   var _showOnlyCathegory = '';
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<Products>(context, listen: false).fetchAndSetProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<Auth>(context);
     final _products = Provider.of<Products>(context, listen: false);
     return Scaffold(
-        appBar: AppBar( 
+        appBar: AppBar(
           title: Text('Hofladen'),
           backgroundColor: Color(0xff262f38),
           actions: <Widget>[
