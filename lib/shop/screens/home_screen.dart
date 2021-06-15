@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ? Dashboard()
                 : Internetview(widget._internetAdress)
             : widget._selectedIndex == 1
-                ? testSide(_auth, shopSide())
+                ? shopSide()
                 : widget._selectedIndex == 3
                     ? _auth.isAdmin && widget._unterMenuIndex != 2
                         ? FutureBuilder(
@@ -67,43 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? SplashScreen()
                                     : ChatScreenOverview(),
                           )
-                        : testSide(
-                            _auth,
-                            FutureBuilder(
-                                future: _messages.fetchAndSetMessages(),
-                                builder: (ctx, authResultSnapshot) =>
-                                    authResultSnapshot.connectionState ==
-                                            ConnectionState.waiting
-                                        ? SplashScreen()
-                                        : ChatScreen()))
-                    : authSide());
-  }
-
-  Widget authSide() {
-    testInternetConnection();
-    if (_internetConnectionTest == false) {
-      return Center(
-        child: Text('Keine Internetverbindung',
-          style: TextStyle(color: Colors.red),
-        ),
-      );
-    }
-    return AuthScreen();
-  }
-
-  Widget testSide(Auth _auth, Widget Side) {
-    testInternetConnection();
-    if (_internetConnectionTest == false || _auth.token == null) {
-      return Center(
-        child: Text(
-          _internetConnectionTest
-              ? 'Bitte zuerst einloggen'
-              : 'Keine Internetverbindung',
-          style: TextStyle(color: Colors.red),
-        ),
-      );
-    }
-    return Side;
+                        : FutureBuilder(
+                            future: _messages.fetchAndSetMessages(),
+                            builder: (ctx, authResultSnapshot) =>
+                                authResultSnapshot.connectionState ==
+                                        ConnectionState.waiting
+                                    ? SplashScreen()
+                                    : ChatScreen())
+                    : AuthScreen());
   }
 
   Widget shopSide() {
