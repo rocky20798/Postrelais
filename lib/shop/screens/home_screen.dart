@@ -26,55 +26,52 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _oldIndex = 10;
-  bool _internetConnectionTest = false;
-
-  Future<void> testInternetConnection() async {
-    try {
-      final result = await InternetAddress.lookup('google.de');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        setState(() {
-          _internetConnectionTest = true;
-        });
-      } else {
-        _internetConnectionTest = false;
-      }
-    } on SocketException catch (_) {
-      _internetConnectionTest = false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final _messages = Provider.of<Messages>(context, listen: false);
     final _auth = Provider.of<Auth>(context, listen: false);
-    testInternetConnection();
 
     return Scaffold(
-        bottomNavigationBar: bottomNavigationBar(),
-        body: widget._selectedIndex == 0
-            ? widget._internetAdress == null
-                ? Dashboard()
-                : Internetview(widget._internetAdress)
-            : widget._selectedIndex == 1
-                ? shopSide()
-                : widget._selectedIndex == 3
-                    ? _auth.isAdmin && widget._unterMenuIndex != 2
-                        ? FutureBuilder(
-                            future: _messages.fetchAndSetUsers(),
-                            builder: (ctx, authResultSnapshot) =>
-                                authResultSnapshot.connectionState ==
-                                        ConnectionState.waiting
-                                    ? SplashScreen()
-                                    : ChatScreenOverview(),
-                          )
-                        : FutureBuilder(
-                            future: _messages.fetchAndSetMessages(),
-                            builder: (ctx, authResultSnapshot) =>
-                                authResultSnapshot.connectionState ==
-                                        ConnectionState.waiting
-                                    ? SplashScreen()
-                                    : ChatScreen())
-                    : AuthScreen());
+      bottomNavigationBar: bottomNavigationBar(),
+      body: widget._selectedIndex == 0
+          ? widget._internetAdress == null
+              ? Dashboard()
+              : Internetview(widget._internetAdress)
+          : widget._selectedIndex == 1
+              ? isLogin(_auth,shopSide())
+              : widget._selectedIndex == 3
+                  ? _auth.isAdmin && widget._unterMenuIndex != 2
+                      ? FutureBuilder(
+                          future: _messages.fetchAndSetUsers(),
+                          builder: (ctx, authResultSnapshot) =>
+                              authResultSnapshot.connectionState ==
+                                      ConnectionState.waiting
+                                  ? SplashScreen()
+                                  : ChatScreenOverview(),
+                        )
+                      : FutureBuilder(
+                          future: _messages.fetchAndSetMessages(),
+                          builder: (ctx, authResultSnapshot) =>
+                              authResultSnapshot.connectionState ==
+                                      ConnectionState.waiting
+                                  ? SplashScreen()
+                                  : ChatScreen(),
+                        )
+                  : AuthScreen(),
+    );
+  }
+
+  Widget isLogin(Auth _auth, Widget widget) {
+    if (_auth.token != null) {
+      return widget;
+    } else {
+      return Center(
+          child: Text(
+        'Bitte einloggen',
+        style: TextStyle(color: Colors.red),
+      ));
+    }
   }
 
   Widget shopSide() {

@@ -20,7 +20,7 @@ class PushNotificationScreen extends StatelessWidget {
     final _auth = Provider.of<Auth>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Push Notification'),
+        title: Text('Push Notifications'),
         backgroundColor: Color(0xff262f38),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -33,8 +33,8 @@ class PushNotificationScreen extends StatelessWidget {
       body: Column(
         children: [
           Text(
-            "PushNotification",
-            style: TextStyle(color: Colors.red),
+            "Diese Seite ist noch in bearbeitung",
+            style: TextStyle(color: Colors.red, fontSize: 20),
           ),
           TextButton(
               onPressed: () {

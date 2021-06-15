@@ -380,6 +380,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     ? _initValues['cathegory']
                     : currentSelectedValue,
                 isDense: true,
+                dropdownColor: Colors.blueGrey,
                 onChanged: (newValue) {
                   setState(() {
                     currentSelectedValue = newValue;
