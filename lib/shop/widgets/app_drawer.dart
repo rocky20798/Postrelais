@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
 import 'package:flutter_lann/shop/screens/push_notification_screen.dart';
+import 'package:flutter_lann/shop/screens/user_cathegory.dart';
 import 'package:flutter_lann/shop/screens/user_products.dart';
 import 'package:provider/provider.dart';
 
@@ -60,6 +61,22 @@ class AppDrawer extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context)
                       .pushReplacementNamed(UserProductsScreen.routeName);
+                },
+              ),
+              if (_auth.isAdmin) Divider(color: Colors.white),
+            if (_auth.isAdmin)
+              ListTile(
+                leading: Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  'Kategorien bearbeiten',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  Navigator.of(context)
+                      .pushReplacementNamed(UserCathegoryScreen.routeName);
                 },
               ),
             Divider(

@@ -1,4 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
+ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_lann/shop/screens/dashboard.dart';
@@ -17,6 +17,7 @@ import 'package:flutter_lann/shop/screens/product_detail.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
 import 'package:flutter_lann/shop/screens/push_notification_screen.dart';
 import 'package:flutter_lann/shop/screens/splash-screen.dart';
+import 'package:flutter_lann/shop/screens/user_cathegory.dart';
 import 'package:flutter_lann/shop/screens/user_products.dart';
 import 'package:flutter_lann/shop/widgets/cart_status.dart';
 import 'package:provider/provider.dart';
@@ -94,6 +95,7 @@ class MyApp extends StatelessWidget {
             OrdersScreen.routeName: (ctx) => HomeScreen(1, null, 2),
             UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
             EditProductScreen.routeName: (ctx) => EditProductScreen(),
+            UserCathegoryScreen.routeName: (ctx) => UserCathegoryScreen(),
             ProductsOverviewScreen.routeName: (ctx) =>
                 HomeScreen(1, null, null),
             AuthScreen.routeName: (ctx) => HomeScreen(2, null, null),

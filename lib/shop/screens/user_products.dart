@@ -3,7 +3,6 @@ import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/products.dart';
 import 'package:flutter_lann/shop/screens/edit_product.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
-import 'package:flutter_lann/shop/widgets/app_drawer.dart';
 import 'package:flutter_lann/shop/widgets/user_product_item.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,6 @@ class UserProductsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _auth = Provider.of<Auth>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meine Produkte'),
