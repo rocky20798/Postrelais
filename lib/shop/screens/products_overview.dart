@@ -58,7 +58,8 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               },
               onSelected: (value) {
                 setState(() {
-                  if (_products.cathegory.indexOf(value) == 0) {
+                  _showOnlyFavorites = false;
+                  if (value == "Alles") {
                     _showOnlyCathegory = '';
                   } else {
                     _showOnlyCathegory = value;

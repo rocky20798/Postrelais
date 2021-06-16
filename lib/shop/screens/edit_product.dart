@@ -283,13 +283,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   var currentSelectedValue;
-  final List<String> cathegory = [
-    'Alles',
-    'Gruppe1',
-    'Gruppe2',
-    'Gruppe3',
-    'Gruppe4'
-  ];
 
   //Image Upload
   var _image;
@@ -394,7 +387,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       id: _editedProduct.id,
                       isFavorite: _editedProduct.isFavorite);
                 },
-                items: cathegory.map((String value) {
+                items: products.cathegory.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),

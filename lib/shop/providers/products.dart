@@ -188,11 +188,17 @@ class Products with ChangeNotifier {
   }
 
   Future<void> updateCathegory(String id, String newCathegory) async {
-    final catIndex = _items.indexWhere((cat) => cat.id == id);
+    int catIndex = _cathegoryId.indexOf(id);
+    print(catIndex);
+    print(id);
+    print(newCathegory);
     if (catIndex >= 0) {
       final url =
-          'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegory/$id.json?auth=$authToken';
-      await http.patch(Uri.parse(url), body: json.encode(newCathegory));
+          'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegory.json?auth=$authToken';
+      await http.patch(
+        Uri.parse(url),
+        body: json.encode({id:newCathegory}),
+      );
       _cathegory[catIndex] = newCathegory;
       notifyListeners();
     } else {
