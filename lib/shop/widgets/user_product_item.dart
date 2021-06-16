@@ -15,7 +15,10 @@ class UserProductItem extends StatelessWidget {
     final scaffold = Scaffold.of(context);
 
     return ListTile(
-      title: Text(title, style: TextStyle(color:Colors.white),),
+      title: Text(
+        title,
+        style: TextStyle(color: Colors.white),
+      ),
       leading: CircleAvatar(
         backgroundImage: NetworkImage(imageUrl),
         backgroundColor: Colors.white,
@@ -34,18 +37,39 @@ class UserProductItem extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () async {
-                try {
-                  await Provider.of<Products>(context, listen: false)
-                      .deleteProduct(id);
-                } catch (error) {
-                  // ignore: deprecated_member_use
-                  scaffold.showSnackBar(SnackBar(
-                      content: Text(
-                    'deleting failed',
-                    textAlign: TextAlign.center,
-                  )));
-                }
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                          title: Text('Sind Sie sicher?'),
+                          content: Text('Möchten Sie diesen Artikel löschen?'),
+                          actions: <Widget>[
+                            // ignore: deprecated_member_use
+                            FlatButton(
+                                child: Text('Nein'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(false);
+                                }),
+                            // ignore: deprecated_member_use
+                            FlatButton(
+                                child: Text('Ja'),
+                                onPressed: () async {
+                                  Navigator.of(context).pop(false);
+                                  try {
+                                    await Provider.of<Products>(context,
+                                            listen: false)
+                                        .deleteProduct(id);
+                                  } catch (error) {
+                                    // ignore: deprecated_member_use
+                                    scaffold.showSnackBar(SnackBar(
+                                        content: Text(
+                                      'deleting failed',
+                                      textAlign: TextAlign.center,
+                                    )));
+                                  }
+                                }),
+                          ],
+                        ));
               },
               color: Colors.red,
             ),
