@@ -32,8 +32,8 @@ class _OrderItemUserState extends State<OrderItemUser> {
     StripePayment.setOptions(StripeOptions(
         publishableKey:
             "pk_live_51HyIjKFJRmSJXBRaTU6ftoDoxeyHf9NIM6OdVrB9MONjsFwIQtF9vP64uo6i3XrjCPd71sMOHLwFc72Bqe1qrrEJ00OzAx6bso",
-        merchantId: "Test",
-        androidPayMode: 'test'));
+        merchantId: "Postrelais App",
+        androidPayMode: 'Karte'));
   }
 
   void setError(dynamic error) {

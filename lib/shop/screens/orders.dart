@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/orders_state.dart';
+import 'package:flutter_lann/shop/screens/cathegorys_overview.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_lann/shop/providers/orders.dart' show Orders;
@@ -28,7 +29,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context)
-                .pushReplacementNamed(ProductsOverviewScreen.routeName);
+                .pushReplacementNamed(CathegorysOverviewScreen.routeName);
           },
         ),
         actions: [

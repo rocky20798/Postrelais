@@ -6,8 +6,6 @@ import 'dart:convert';
 
 class Products with ChangeNotifier {
   List<Product> _items = [];
-  List<String> _cathegory = [];
-  List<String> _cathegoryId = [];
   final String authToken;
   final String userId;
 
@@ -17,30 +15,20 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  List<String> get cathegory {
-    return [..._cathegory];
-  }
-
-  List<String> get cathegoryId {
-    return [..._cathegoryId];
-  }
-
-  String getCathegoryId(String Cathegory) {
-    int position = _cathegory.indexOf(Cathegory);
-    return _cathegoryId[position];
-  }
-
   List<Product> favCatItems(bool favorite, String cathegory) {
-    if (favorite) {
-      return _items.where((prodItem) => prodItem.isFavorite).toList();
-    } else {
-      if (cathegory != '') {
+    if (cathegory != '') {
+      if (favorite) {
+        return _items
+            .where((prodItem) =>
+                prodItem.cathegory == cathegory && prodItem.isFavorite)
+            .toList();
+      } else {
         return _items
             .where((prodItem) => prodItem.cathegory == cathegory)
             .toList();
-      } else {
-        return _items.toList();
       }
+    } else {
+      return _items.toList();
     }
   }
 
@@ -49,7 +37,6 @@ class Products with ChangeNotifier {
   }
 
   Future<String> fetchAndSetProducts([bool filterByUser = false]) async {
-    fetchAndSetCathegory();
     final filterString =
         filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     var url =
@@ -91,36 +78,6 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<String> fetchAndSetCathegory() async {
-    var url =
-        'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegory.json?auth=$authToken';
-    try {
-      final response = await http.get(Uri.parse(url));
-      Map<String, dynamic> extractedData = null;
-      if (response == null) {
-        print("Data == null Cathegory");
-        return null;
-      } else {
-        extractedData = json.decode(response.body) as Map<String, dynamic>;
-        if (extractedData == null) {
-          return null;
-        }
-      }
-      List<String> _cat = [];
-      List<String> _catId = [];
-      extractedData.forEach((catId, catData) {
-        _cat.add(catData);
-        _catId.add(catId);
-      });
-      _cathegory = _cat;
-      _cathegoryId = _catId;
-      notifyListeners();
-    } catch (error) {
-      print(error);
-      return "Error";
-    }
-  }
-
   Future<void> addProduct(Product product) async {
     final url =
         'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/products.json?auth=$authToken';
@@ -152,21 +109,6 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> addCathegory(String cathegory) async {
-    final url =
-        'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegory.json?auth=$authToken';
-    try {
-      final response = await http.post(
-        Uri.parse(url),
-        body: json.encode(cathegory),
-      );
-      fetchAndSetCathegory();
-    } catch (error) {
-      print(error);
-      throw error;
-    }
-  }
-
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
@@ -181,25 +123,6 @@ class Products with ChangeNotifier {
             'cathegory': newProduct.cathegory,
           }));
       _items[prodIndex] = newProduct;
-      notifyListeners();
-    } else {
-      print('...');
-    }
-  }
-
-  Future<void> updateCathegory(String id, String newCathegory) async {
-    int catIndex = _cathegoryId.indexOf(id);
-    print(catIndex);
-    print(id);
-    print(newCathegory);
-    if (catIndex >= 0) {
-      final url =
-          'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegory.json?auth=$authToken';
-      await http.patch(
-        Uri.parse(url),
-        body: json.encode({id:newCathegory}),
-      );
-      _cathegory[catIndex] = newCathegory;
       notifyListeners();
     } else {
       print('...');
@@ -221,20 +144,113 @@ class Products with ChangeNotifier {
     }
     existingProduct = null;
   }
+}
+
+class Cathegorys with ChangeNotifier {
+  List<Cathegory> _items = [];
+  final String authToken;
+  final String userId;
+
+  Cathegorys(this.authToken, this.userId, this._items);
+
+  List<Cathegory> get items {
+    return [..._items];
+  }
+
+  List<String> get CatList {}
+
+  Cathegory findById(String id) {
+    return _items.firstWhere((prod) => prod.id == id);
+  }
+
+  Future<String> fetchAndSetCathegorys([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+    var url =
+        'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegorys.json?auth=$authToken&$filterString';
+    try {
+      final response = await http.get(Uri.parse(url));
+      Map<String, dynamic> extractedData = null;
+      if (response == null) {
+        print("Data == null Cathegorys");
+        return null;
+      } else {
+        extractedData = json.decode(response.body) as Map<String, dynamic>;
+        if (extractedData == null) {
+          return null;
+        }
+      }
+      final List<Cathegory> loadedProducts = [];
+      extractedData.forEach((catId, catData) {
+        loadedProducts.add(Cathegory(
+          id: catId,
+          title: catData['title'],
+          imageUrl: catData['imageUrl'],
+        ));
+      });
+      _items = loadedProducts;
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      return "Error";
+    }
+  }
+
+  Future<void> addCathegory(Cathegory cathegory) async {
+    final url =
+        'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegorys.json?auth=$authToken';
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode({
+          'title': cathegory.title,
+          'imageUrl': cathegory.imageUrl,
+          'creatorId': userId,
+        }),
+      );
+      final newCathegory = Cathegory(
+        title: cathegory.title,
+        imageUrl: cathegory.imageUrl,
+        id: json.decode(response.body)['name'],
+      );
+      _items.add(newCathegory);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  Future<void> updateCathegory(String id, Cathegory newCathegory) async {
+    final catIndex = _items.indexWhere((cat) => cat.id == id);
+    if (catIndex >= 0) {
+      final url =
+          'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegorys/$id.json?auth=$authToken';
+      await http.patch(Uri.parse(url),
+          body: json.encode({
+            'title': newCathegory.title,
+            'imageUrl': newCathegory.imageUrl,
+          }));
+      _items[catIndex] = newCathegory;
+      notifyListeners();
+    } else {
+      print('...');
+    }
+  }
 
   Future<void> deleteCathegory(String id) async {
     final url =
-        'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegory/$id.json?auth=$authToken';
-    final existingCathegoryIndex = _cathegoryId.indexOf(id);
-    final existingCathegory = _cathegory[existingCathegoryIndex];
-    _cathegory.removeAt(existingCathegoryIndex);
-    _cathegoryId.removeAt(existingCathegoryIndex);
+        'https://postrelais-default-rtdb.europe-west1.firebasedatabase.app/cathegorys/$id.json?auth=$authToken';
+    final existingCathegoryIndex = _items.indexWhere((cat) => cat.id == id);
+    var existingProduct = _items[existingCathegoryIndex];
+    _items.removeAt(existingCathegoryIndex);
     notifyListeners();
     final response = await http.delete(Uri.parse(url));
     if (response.statusCode >= 400) {
-      addCathegory(existingCathegory);
+      _items.insert(existingCathegoryIndex, existingProduct);
       notifyListeners();
       //throw HttpException('Could not delete product.');
     }
+    existingProduct = null;
   }
 }

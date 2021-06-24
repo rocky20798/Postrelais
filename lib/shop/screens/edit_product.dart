@@ -348,6 +348,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   Widget typeFieldWidget() {
     final products = Provider.of<Products>(context);
+    final cathegorys = Provider.of<Cathegorys>(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: FormField<String>(
@@ -387,10 +388,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       id: _editedProduct.id,
                       isFavorite: _editedProduct.isFavorite);
                 },
-                items: products.cathegory.map((String value) {
+                items:cathegorys.items.map((Cathegory cathegory) {
                   return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+                    value: cathegory.id,
+                    child: Text(cathegory.title),
                   );
                 }).toList(),
               ),

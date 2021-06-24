@@ -49,3 +49,15 @@ class Product with ChangeNotifier {
     }
   }
 }
+
+class Cathegory with ChangeNotifier {
+  final String id;
+  final String title;
+  final String imageUrl;
+
+  Cathegory({
+    @required this.id,
+    @required this.title,
+    @required this.imageUrl,
+  });
+}

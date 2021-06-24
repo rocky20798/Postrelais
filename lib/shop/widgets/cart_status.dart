@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/cart.dart';
 import 'package:flutter_lann/shop/providers/products.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
 class CartStatus extends StatelessWidget with ChangeNotifier {
@@ -14,10 +15,18 @@ class CartStatus extends StatelessWidget with ChangeNotifier {
       context,
       listen: false,
     ).findById(productId);
-    return Row(
+    return Builder(
+        builder: (context) =>Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children:<Widget>[Builder(
-        builder: (context) => IconButton(
+      children:<Widget>[
+        DecimalNumberPicker(
+          value: 3.0,
+          minValue: 0,
+          maxValue: 10,
+          decimalPlaces: 1,
+          onChanged: (value){},
+        ),
+         IconButton(
           icon: Icon(
             Icons.add_shopping_cart,
           ),
@@ -40,8 +49,8 @@ class CartStatus extends StatelessWidget with ChangeNotifier {
           },
           color: Theme.of(context).accentColor,
         ),
-      ),
       ]
+      ),
     );
   }
 }

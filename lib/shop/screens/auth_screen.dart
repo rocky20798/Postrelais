@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lann/shop/screens/cathegorys_overview.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth.dart';
@@ -99,7 +100,7 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = false;
       Navigator.of(context)
-          .pushReplacementNamed(ProductsOverviewScreen.routeName);
+          .pushReplacementNamed(CathegorysOverviewScreen.routeName);
     });
   }
 
@@ -119,7 +120,7 @@ class _AuthCardState extends State<AuthCard> {
       setState(() {
         _isLoading = false;
         Navigator.of(context)
-            .pushReplacementNamed(ProductsOverviewScreen.routeName);
+            .pushReplacementNamed(CathegorysOverviewScreen.routeName);
       });
       const errorMessage =
           'Could not authenticate you. Please try again later.';
@@ -144,7 +145,7 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = false;
       Navigator.of(context)
-          .pushReplacementNamed(ProductsOverviewScreen.routeName);
+          .pushReplacementNamed(CathegorysOverviewScreen.routeName);
     });
   }
 
@@ -306,7 +307,7 @@ class _AuthCardState extends State<AuthCard> {
                 if (!_isLoading)
                   FlatButton(
                     child: Text(
-                        '${_authMode == AuthMode.Gast ? 'Angestellte' : 'Gäste'}'),
+                        '${_authMode == AuthMode.Gast ? 'Stuff' : 'Guest'}'),
                     onPressed: _switchAuthMode,
                     padding:
                         EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),

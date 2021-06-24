@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_lann/shop/screens/cathegorys_overview.dart';
 import 'package:flutter_lann/shop/screens/dashboard.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/interentview.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_lann/shop/screens/auth_screen.dart';
 import 'package:flutter_lann/shop/screens/cart.dart';
 import 'package:flutter_lann/shop/screens/chat_screen.dart';
 import 'package:flutter_lann/shop/screens/chat_screen_overview.dart';
+import 'package:flutter_lann/shop/screens/info_screen.dart';
 import 'package:flutter_lann/shop/screens/orders.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
 import 'package:flutter_lann/shop/screens/splash-screen.dart';
@@ -30,18 +32,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final _messages = Provider.of<Messages>(context, listen: false);
-    final _auth = Provider.of<Auth>(context, listen: false);
+    final _auth = Provider.of<Auth>(context, listen: true);
 
     return Scaffold(
-      bottomNavigationBar: bottomNavigationBar(),
-      body: widget._selectedIndex == 0
+      bottomNavigationBar:
+          _auth.isAnonym ? bottomNavigationBar() : bottomNavigationBarInfo(),
+      body: widget._selectedIndex == 1
           ? widget._internetAdress == null
               ? Dashboard()
               : Internetview(widget._internetAdress)
-          : widget._selectedIndex == 1
-              ? isLogin(_auth,shopSide())
-              : widget._selectedIndex == 3
-                  ? _auth.isAdmin && widget._unterMenuIndex != 2
+          : widget._selectedIndex == 2
+              ? isLogin(_auth, shopSide())
+              : widget._selectedIndex == 4
+                  ? _auth.isAdmin && widget._unterMenuIndex != 3
                       ? FutureBuilder(
                           future: _messages.fetchAndSetUsers(),
                           builder: (ctx, authResultSnapshot) =>
@@ -58,7 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ? SplashScreen()
                                   : ChatScreen(),
                         )
-                  : AuthScreen(),
+                  : _auth.isAnonym
+                      ? AuthScreen()
+                      : InfoScreen(),
     );
   }
 
@@ -76,12 +81,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget shopSide() {
     if (widget._unterMenuIndex == 0 || widget._unterMenuIndex == null) {
-      return ProductsOverviewScreen();
+      return CathegorysOverviewScreen();
     } else if (widget._unterMenuIndex == 1) {
       return CartScreen();
     } else if (widget._unterMenuIndex == 2) {
       return OrdersScreen();
     }
+    return CathegorysOverviewScreen();
   }
 
   Widget bottomNavigationBar() {
@@ -92,16 +98,50 @@ class _HomeScreenState extends State<HomeScreen> {
       showUnselectedLabels: false,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.dashboard, color: Color(0xffc9a42c)),
+          icon: Icon(Icons.login, color: Color(0xffc9a42c)),
+          label: 'Profil',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.view_list, color: Color(0xffc9a42c)),
           label: 'Aktivitäten',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shop, color: Color(0xffc9a42c)),
-          label: 'Shop',
+          icon: Icon(Icons.shopping_cart, color: Color(0xffc9a42c)),
+          label: 'Hofladen',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.login, color: Color(0xffc9a42c)),
-          label: 'Profil',
+          icon: Icon(Icons.message, color: Color(0xffc9a42c)),
+          label: 'Chat',
+        ),
+      ],
+      currentIndex: widget._selectedIndex,
+      selectedItemColor: Color(0xffc9a42c),
+      unselectedItemColor: Colors.blueGrey,
+      onTap: (int index) => setState(() {
+        widget._selectedIndex = index;
+        widget._internetAdress = null;
+      }),
+    );
+  }
+
+  Widget bottomNavigationBarInfo() {
+    return BottomNavigationBar(
+      backgroundColor: Color(0xff262f38),
+      type: BottomNavigationBarType.fixed,
+      showSelectedLabels: true,
+      showUnselectedLabels: false,
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.info_outline, color: Color(0xffc9a42c)),
+          label: 'Info',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.view_list, color: Color(0xffc9a42c)),
+          label: 'Aktivitäten',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.shopping_cart, color: Color(0xffc9a42c)),
+          label: 'Hofladen',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.message, color: Color(0xffc9a42c)),

@@ -10,14 +10,13 @@ import 'package:flutter_lann/shop/widgets/product_grid.dart';
 import 'package:provider/provider.dart';
 
 class ProductsOverviewScreen extends StatefulWidget {
-  static const routeName = '/product-overview';
+  static const routeName = '/products-overview';
   @override
   _ProductsOverviewScreenState createState() => _ProductsOverviewScreenState();
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showOnlyFavorites = false;
-  var _showOnlyCathegory = '';
 
   Future<void> _refreshProducts(BuildContext context) async {
     await Provider.of<Products>(context, listen: false).fetchAndSetProducts();
@@ -26,7 +25,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     final _auth = Provider.of<Auth>(context);
-    final _products = Provider.of<Products>(context, listen: false);
+    final _cathegorys = Provider.of<Cathegorys>(context, listen: false);
+    final selectedCathegory =
+        ModalRoute.of(context).settings.arguments as String; 
     return Scaffold(
         appBar: AppBar(
           title: Text('Hofladen'),
@@ -39,31 +40,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               color: Colors.red,
               onPressed: () {
                 setState(() {
-                  _showOnlyCathegory = '';
                   _showOnlyFavorites = !_showOnlyFavorites;
-                });
-              },
-            ),
-            PopupMenuButton(
-              icon: Icon(
-                Icons.more_vert,
-              ),
-              itemBuilder: (BuildContext context) {
-                return _products.cathegory.map((choice) {
-                  return PopupMenuItem(
-                    value: choice,
-                    child: Text(choice),
-                  );
-                }).toList();
-              },
-              onSelected: (value) {
-                setState(() {
-                  _showOnlyFavorites = false;
-                  if (value == "Alles") {
-                    _showOnlyCathegory = '';
-                  } else {
-                    _showOnlyCathegory = value;
-                  }
                 });
               },
             ),
@@ -94,7 +71,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   ),
           ],
         ),
-        drawer: _auth.isAnonym ? null : AppDrawer(),
+        //drawer: _auth.isAnonym ? null : AppDrawer(),
         body: FutureBuilder(
             future: _refreshProducts(context),
             builder: (ctx, snapshot) => snapshot.connectionState ==
@@ -102,7 +79,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 ? Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
                     onRefresh: () => _refreshProducts(context),
-                    child: ProductsGrid(_showOnlyFavorites, _showOnlyCathegory),
+                    child: ProductsGrid(_showOnlyFavorites, selectedCathegory),
                   )));
   }
 }

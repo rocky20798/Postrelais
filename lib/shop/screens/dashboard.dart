@@ -95,8 +95,8 @@ class MyHomePage extends StatelessWidget {
                                 e.title,
                                 style: TextStyle(
                                     color: e.isActive
-                                        ? Colors.white
-                                        : Colors.grey),
+                                        ? Colors.black
+                                        : Colors.white),
                               ),
                             ],
                           ),

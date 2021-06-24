@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/products.dart';
+import 'package:flutter_lann/shop/screens/cathegorys_overview.dart';
+import 'package:flutter_lann/shop/screens/edit_cathegory.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
+import 'package:flutter_lann/shop/widgets/user_cathegory_item.dart';
 import 'package:provider/provider.dart';
 
-class UserCathegoryScreen extends StatefulWidget {
-  static const routeName = '/user-cathegory';
+class UserCathegoryScreen extends StatelessWidget {
+  static const routeName = '/user-cathegorys';
 
-  @override
-  _UserCathegoryScreenState createState() => _UserCathegoryScreenState();
-}
+  Future<void> _refreshCathegorys(BuildContext context) async {
+    await Provider.of<Cathegorys>(context, listen: false).fetchAndSetCathegorys();
+  }
 
-class _UserCathegoryScreenState extends State<UserCathegoryScreen> {
   @override
   Widget build(BuildContext context) {
-    final _productsData = Provider.of<Products>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meine Kategorien'),
@@ -23,129 +23,45 @@ class _UserCathegoryScreenState extends State<UserCathegoryScreen> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context)
-                .pushReplacementNamed(ProductsOverviewScreen.routeName);
+                .pushReplacementNamed(CathegorysOverviewScreen.routeName);
           },
         ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              setState(() {
-                _productsData.addCathegory("Neue Gruppe");
-              });
+              Navigator.of(context).pushNamed(EditCathegoryScreen.routeName);
             },
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: _productsData.cathegory.length,
-        itemBuilder: (_, i) => Column(
-          children: [
-            editCathegoryWidget(
-                _productsData.cathegoryId[i], _productsData.cathegory[i])
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class editCathegoryWidget extends StatefulWidget {
-  String id;
-  String title;
-
-  editCathegoryWidget(this.id, this.title);
-
-  @override
-  _editCathegoryWidgetState createState() => _editCathegoryWidgetState();
-}
-
-class _editCathegoryWidgetState extends State<editCathegoryWidget> {
-  bool _editMode = false;
-  TextEditingController _controller = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    //final _productsData = Provider.of<Products>(context, listen: false);
-    return Column(
-      children: [
-        ListTile(
-          title: Text(
-            widget.title,
-            style: TextStyle(color: Colors.white),
-          ),
-          trailing: Container(
-            width: 100,
-            child: Row(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(_editMode ? Icons.save : Icons.edit),
-                  onPressed: () async {
-                    try {
-                      if (_editMode) {
-                        await Provider.of<Products>(context, listen: false)
-                            .updateCathegory(widget.id, _controller.text);
-                      }
-                      setState(() {
-                        _editMode = !_editMode;
-                      });
-                    } catch (error) {
-                      // ignore: deprecated_member_use
-                      SnackBar(
-                          content: Text(
-                        'deleting failed',
-                        textAlign: TextAlign.center,
-                      ));
-                    }
-                  },
-                  color: Colors.blue,
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () async {
-                    try {
-                      await Provider.of<Products>(context, listen: false)
-                          .deleteCathegory(widget.id);
-                      setState(() {});
-                    } catch (error) {
-                      // ignore: deprecated_member_use
-                      SnackBar(
-                          content: Text(
-                        'deleting failed',
-                        textAlign: TextAlign.center,
-                      ));
-                    }
-                  },
-                  color: Colors.red,
-                ),
-              ],
-            ),
-          ),
-        ),
-        _editMode
-            ? TextFormField(
-                style: TextStyle(color: Colors.white),
-                controller: _controller,
-                cursorColor: Colors.white,
-                decoration: InputDecoration(
-                    labelText: 'Test Label',
-                    labelStyle: TextStyle(color: Colors.blueGrey),
-                    hintStyle: TextStyle(color: Colors.blueGrey),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          color: Color(0xffc9a42c), width: 2.0),
-                      borderRadius: BorderRadius.circular(25.0),
+      body: FutureBuilder(
+        future: _refreshCathegorys(context),
+        builder: (ctx, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: () => _refreshCathegorys(context),
+                    child: Consumer<Cathegorys>(
+                      builder: (ctx, cathegorysData, _) => Padding(
+                        padding: EdgeInsets.all(8),
+                        child: ListView.builder(
+                          itemCount: cathegorysData.items.length,
+                          itemBuilder: (_, i) => Column(
+                            children: [
+                              UserCathegoryItem(
+                                cathegorysData.items[i].id,
+                                cathegorysData.items[i].title,
+                                cathegorysData.items[i].imageUrl,
+                              ),
+                              Divider(),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.white, width: 2.0),
-                        borderRadius: BorderRadius.circular(25.0))),
-                keyboardType: TextInputType.name,
-                validator: (value) {},
-                onSaved: (value) {},
-              )
-            : Divider()
-      ],
+                  ),
+      ),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lann/shop/providers/auth.dart';
 import 'package:flutter_lann/shop/providers/products.dart';
+import 'package:flutter_lann/shop/screens/cathegorys_overview.dart';
 import 'package:flutter_lann/shop/screens/edit_product.dart';
 import 'package:flutter_lann/shop/screens/products_overview.dart';
 import 'package:flutter_lann/shop/widgets/user_product_item.dart';
@@ -23,7 +24,7 @@ class UserProductsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context)
-                .pushReplacementNamed(ProductsOverviewScreen.routeName);
+                .pushReplacementNamed(CathegorysOverviewScreen.routeName);
           },
         ),
         actions: <Widget>[
