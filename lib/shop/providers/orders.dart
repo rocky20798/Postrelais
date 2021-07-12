@@ -148,7 +148,7 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> updateOrder(
-      String userIdOther, String orderId, String state, String note) async {
+      String userIdOther, String orderId, String state, String note, double amount) async {
     if (userIdOther == "") {
       userIdOther = userId;
     }
@@ -158,6 +158,7 @@ class Orders with ChangeNotifier {
         body: json.encode({
           'state': state,
           'note': note,
+          'amount': amount,
         }));
     notifyListeners();
   }

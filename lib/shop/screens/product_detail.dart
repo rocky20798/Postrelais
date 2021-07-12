@@ -67,14 +67,6 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10),
-            Text(
-              '${loadedProduct.price.toStringAsFixed(2)}€',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 20,
-              ),
-            ),
             if (!_auth.isAnonym) CartStatus(),
             SizedBox(
               height: 10,

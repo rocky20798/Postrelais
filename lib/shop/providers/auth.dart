@@ -11,7 +11,6 @@ class Auth with ChangeNotifier {
   String _userId;
   var _timeLastLogin = DateTime.parse("2021-05-25 10:00:00Z");
   bool _isAnonym = true;
-  User LoggedUser;
 
   bool get isLoggedIn {
     return _token != null && _userId != null;
@@ -39,6 +38,16 @@ class Auth with ChangeNotifier {
 
   bool get isAnonym {
     return isAdmin ? false : phoneNumber == null;
+  }
+
+  bool get isGuest {
+    if (_isAnonym) {
+      return false;
+    } else if (isAdmin) {
+      return false;
+    } else {
+      return false;
+    }
   }
 
   String get token {
@@ -146,7 +155,6 @@ class Auth with ChangeNotifier {
       prefs.setString('userData', userData);
     }
     _isAnonym = user.isAnonymous;
-    LoggedUser = user;
   }
 
   Future<void> verifyPhoneNumber(String phone) async {

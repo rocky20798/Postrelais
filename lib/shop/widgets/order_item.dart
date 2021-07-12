@@ -207,7 +207,7 @@ class _OrderItemUserState extends State<OrderItemUser> {
   void buttonClick(int pos) {
     final _orderState = Provider.of<OrderState>(context, listen: false);
     widget.orders.updateOrder("", widget.order.id, _orderState.choiceList[pos],
-        _orderState.choiceListDesc[pos]);
+        _orderState.choiceListDesc[pos], widget.order.amount);
     Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
   }
 
@@ -254,7 +254,8 @@ class OrderItemAdmin extends StatefulWidget {
 class _OrderItemAdminState extends State<OrderItemAdmin> {
   var _expanded = false;
   var _expanded2 = false;
-  final myController = TextEditingController();
+  final myController_text = TextEditingController();
+  final myController_preis = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -338,7 +339,7 @@ class _OrderItemAdminState extends State<OrderItemAdmin> {
                     color: Colors.green,
                     onPressed: () {
                       setState(() {
-                        buttonClick(4, null);
+                        buttonClick(4, null, 0.0);
                       });
                     }),
                 IconButton(
@@ -346,7 +347,7 @@ class _OrderItemAdminState extends State<OrderItemAdmin> {
                     color: Colors.green,
                     onPressed: () {
                       setState(() {
-                        buttonClick(5, null);
+                        buttonClick(5, null, 0.0);
                       });
                     }),
                 IconButton(
@@ -354,7 +355,7 @@ class _OrderItemAdminState extends State<OrderItemAdmin> {
                     color: Colors.purple,
                     onPressed: () {
                       setState(() {
-                        buttonClick(2, null);
+                        buttonClick(2, null, 0.0);
                       });
                     }),
                 IconButton(
@@ -370,7 +371,7 @@ class _OrderItemAdminState extends State<OrderItemAdmin> {
                     color: Colors.red,
                     onPressed: () {
                       setState(() {
-                        buttonClick(6, null);
+                        buttonClick(6, null, 0.0);
                       });
                     }),
                 IconButton(
@@ -378,46 +379,70 @@ class _OrderItemAdminState extends State<OrderItemAdmin> {
                     color: Colors.red,
                     onPressed: () {
                       setState(() {
-                        buttonClick(7, null);
+                        buttonClick(7, null, 0.0);
                       });
                     }),
               ],
             ),
           if (_expanded && _expanded2)
-            Row(
-              mainAxisSize: MainAxisSize.max,
+            Column(
               children: [
-                Expanded(
-                  flex: 7,
-                  child: TextFormField(
-                    controller: myController,
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      flex: 7,
+                      child: TextFormField(
+                        decoration: InputDecoration(hintText: "Nachricht"),
+                        controller: myController_text,
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  flex: 3,
-                  child: IconButton(
-                      icon: Icon(Icons.arrow_forward),
-                      onPressed: () {
-                        setState(() {
-                          buttonClick(3, myController.text);
-                          _expanded2 = false;
-                        });
-                      }),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      flex: 7,
+                      child: TextFormField(
+                        decoration: InputDecoration(hintText: "Neuer Preis"),
+                        keyboardType: TextInputType.number,
+                        controller: myController_preis,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: IconButton(
+                          icon: Icon(Icons.arrow_forward),
+                          onPressed: () {
+                            setState(() {
+                              if (myController_preis.text == "") {
+                                buttonClick(3, myController_text.text, 0.0);
+                              } else {
+                                buttonClick(3, myController_text.text,
+                                    double.parse(myController_preis.text));
+                              }
+                              _expanded2 = false;
+                            });
+                          }),
+                    ),
+                  ],
                 ),
               ],
-            ),
+            )
         ],
       ),
     );
   }
 
-  void buttonClick(int pos, String text) {
+  void buttonClick(int pos, String text, double amount) {
     final _orderState = Provider.of<OrderState>(context, listen: false);
     widget.orders.updateOrder(
         widget.order.creatorId,
         widget.order.id,
         _orderState.choiceList[pos],
-        text == null ? _orderState.choiceListDesc[pos] : text);
+        text == null ? _orderState.choiceListDesc[pos] : text,
+        amount == 0.0 ? widget.order.amount : amount);
     //Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
   }
 }

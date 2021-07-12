@@ -43,24 +43,27 @@ class _HomeScreenState extends State<HomeScreen> {
               : Internetview(widget._internetAdress)
           : widget._selectedIndex == 2
               ? isLogin(_auth, shopSide())
-              : widget._selectedIndex == 4
-                  ? _auth.isAdmin && widget._unterMenuIndex != 3
-                      ? FutureBuilder(
-                          future: _messages.fetchAndSetUsers(),
-                          builder: (ctx, authResultSnapshot) =>
-                              authResultSnapshot.connectionState ==
-                                      ConnectionState.waiting
-                                  ? SplashScreen()
-                                  : ChatScreenOverview(),
-                        )
-                      : FutureBuilder(
-                          future: _messages.fetchAndSetMessages(),
-                          builder: (ctx, authResultSnapshot) =>
-                              authResultSnapshot.connectionState ==
-                                      ConnectionState.waiting
-                                  ? SplashScreen()
-                                  : ChatScreen(),
-                        )
+              : widget._selectedIndex == 3
+                  ? _auth.isGuest
+                      ? _auth.isAdmin && widget._unterMenuIndex != 3
+                          ? FutureBuilder(
+                              future: _messages.fetchAndSetUsers(),
+                              builder: (ctx, authResultSnapshot) =>
+                                  authResultSnapshot.connectionState ==
+                                          ConnectionState.waiting
+                                      ? SplashScreen()
+                                      : ChatScreenOverview(),
+                            )
+                          : FutureBuilder(
+                              future: _messages.fetchAndSetMessages(),
+                              builder: (ctx, authResultSnapshot) =>
+                                  authResultSnapshot.connectionState ==
+                                          ConnectionState.waiting
+                                      ? SplashScreen()
+                                      : ChatScreen(),
+                            )
+                      : Internetview(
+                          "https://www.tidio.com/talk/zihrme5jexqvdrm9deinu7tx2rjfo5ce#mobile-widget")
                   : _auth.isAnonym
                       ? AuthScreen()
                       : InfoScreen(),

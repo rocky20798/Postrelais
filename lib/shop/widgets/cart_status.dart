@@ -5,6 +5,21 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
 
 class CartStatus extends StatelessWidget with ChangeNotifier {
+  @override
+  Widget build(BuildContext context) {
+    return Builder(
+      builder: (context) => _IntegerExample(),
+    );
+  }
+}
+
+class _IntegerExample extends StatefulWidget {
+  @override
+  __IntegerExampleState createState() => __IntegerExampleState();
+}
+
+class __IntegerExampleState extends State<_IntegerExample> {
+  int _currentIntValue = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -15,42 +30,41 @@ class CartStatus extends StatelessWidget with ChangeNotifier {
       context,
       listen: false,
     ).findById(productId);
-    return Builder(
-        builder: (context) =>Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children:<Widget>[
-        DecimalNumberPicker(
-          value: 3.0,
-          minValue: 0,
-          maxValue: 10,
-          decimalPlaces: 1,
-          onChanged: (value){},
-        ),
-         IconButton(
-          icon: Icon(
-            Icons.add_shopping_cart,
-          ),
-          onPressed: () {
-            cart.addItem(
-                loadedProduct.id, loadedProduct.price, loadedProduct.title);
-            Scaffold.of(context).hideCurrentSnackBar();
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(
-                'Added item to cart!',
-              ),
-              duration: Duration(seconds: 2),
-              action: SnackBarAction(
-                label: 'UNDO',
-                onPressed: () {
-                  cart.removeSingleItem(loadedProduct.id);
-                },
-              ),
-            ));
-          },
-          color: Theme.of(context).accentColor,
-        ),
-      ]
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+      NumberPicker(
+        value: _currentIntValue,
+        minValue: 0,
+        maxValue: 20,
+        step: 1,
+        haptics: true,
+        onChanged: (value) => setState(() => _currentIntValue = value),
       ),
-    );
+      Text("x ${loadedProduct.price.toStringAsFixed(2)}€ = ${(loadedProduct.price * _currentIntValue).toStringAsFixed(2)}€", style: TextStyle(color: Colors.white, fontSize: 20),),
+      if(_currentIntValue > 0)
+      IconButton(
+        icon: Icon(
+          Icons.add,
+          size: 40,
+        ),
+        onPressed: () {
+          cart.addItems(
+              loadedProduct.id, loadedProduct.price, loadedProduct.title, _currentIntValue);
+          Scaffold.of(context).hideCurrentSnackBar();
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+              'Added item to cart!',
+            ),
+            duration: Duration(seconds: 2),
+            action: SnackBarAction(
+              label: 'UNDO',
+              onPressed: () {
+                cart.removeMultiItems(loadedProduct.id, _currentIntValue);
+              },
+            ),
+          ));
+        },
+        color: Theme.of(context).accentColor,
+      ),
+    ]);
   }
 }

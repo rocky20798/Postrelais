@@ -51,29 +51,29 @@ class MyHomePage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (_) => idx == 0
-                                    ? HomeScreen(0, 'https://postrelais.eu/mietfahrzeuge/', null)
+                                    ? HomeScreen(1, 'https://postrelais.eu/mietfahrzeuge/', null)
                                     : idx == 1
-                                        ? HomeScreen(0,'https://www.postrelais.eu/equipment/sauna-wellness/', null)
+                                        ? HomeScreen(1,'https://www.postrelais.eu/equipment/sauna-wellness/', null)
                                         : idx == 2
-                                            ? HomeScreen(0,'https://www.postrelais.eu/equipment/saalvermietung/', null)
+                                            ? HomeScreen(1,'https://www.postrelais.eu/equipment/saalvermietung/', null)
                                             : idx == 3
-                                                ?HomeScreen(0,'https://postrelais.eu/sehenswuerdigkeiten/', null)
+                                                ?HomeScreen(1,'https://postrelais.eu/sehenswuerdigkeiten/', null)
                                                 : idx == 4
-                                                    ? HomeScreen(0,'https://postrelais.eu/wanderungen/', null)
+                                                    ? HomeScreen(1,'https://postrelais.eu/wanderungen/', null)
                                                     : idx == 5
-                                                        ? HomeScreen(0,'https://postrelais.eu/veranstaltungen/', null)
+                                                        ? HomeScreen(1,'https://postrelais.eu/veranstaltungen/', null)
                                                         : idx == 6
-                                                            ? HomeScreen(0,'https://postrelais.eu/restaurants/', null)
+                                                            ? HomeScreen(1,'https://postrelais.eu/restaurants/', null)
                                                             : idx == 7
-                                                                ? HomeScreen(0,'https://postrelais.eu/einkaufen/', null)
+                                                                ? HomeScreen(1,'https://postrelais.eu/einkaufen/', null)
                                                                 : idx == 8
-                                                                    ? HomeScreen(0,'https://postrelais.eu/bankautomaten/', null)
+                                                                    ? HomeScreen(1,'https://postrelais.eu/bankautomaten/', null)
                                                                     : idx == 9
-                                                                        ? HomeScreen(0,'https://postrelais.eu/medizinische-versorgung/', null)
+                                                                        ? HomeScreen(1,'https://postrelais.eu/medizinische-versorgung/', null)
                                                                         : idx ==
                                                                                 10
-                                                                            ? HomeScreen(0,'https://postrelais.eu/oepnv/', null)
-                                                                            : HomeScreen(0,'https://postrelais.eu', null)),
+                                                                            ? HomeScreen(1,'https://postrelais.eu/oepnv/', null)
+                                                                            : HomeScreen(1,'https://postrelais.eu', null)),
                           );
                         },
                         child: Card(
