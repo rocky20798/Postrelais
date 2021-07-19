@@ -67,9 +67,17 @@ class ProductDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            if (!_auth.isAnonym) CartStatus(),
             SizedBox(
               height: 10,
+            ),
+            _auth.isAnonym
+                ? Text(
+                    "${loadedProduct.price.toStringAsFixed(2)}€",
+                    style: TextStyle(color: Colors.white, fontSize: 30),
+                  )
+                : CartStatus(),
+            SizedBox(
+              height: 20,
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),

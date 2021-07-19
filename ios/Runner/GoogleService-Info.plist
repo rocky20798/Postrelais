@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>599802664377-c8e6a1oon8elvha4qei9founbaqe8rvf.apps.googleusercontent.com</string>
+	<string>599802664377-om720qabrdqo7r4odh9sesbdeqp36gqk.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.599802664377-c8e6a1oon8elvha4qei9founbaqe8rvf</string>
+	<string>com.googleusercontent.apps.599802664377-om720qabrdqo7r4odh9sesbdeqp36gqk</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>599802664377-38iq14rfue84p4bm8rtphggjarr1augs.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyD_0czLhD9XNQgk3mXgBWbx3seXrGz6a7g</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.twcsoftware.flutterlann</string>
+	<string>com.twcsoftware.flutterLannBVH</string>
 	<key>PROJECT_ID</key>
 	<string>postrelais</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:599802664377:ios:299ef147fcad7760b61268</string>
+	<string>1:599802664377:ios:641de43d75cd0857b61268</string>
+	<key>DATABASE_URL</key>
+	<string>https://postrelais-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>
